@@ -59,11 +59,8 @@ There are four different view types:
 
    ![The create new view configuration dialog](/images/dashboards/dashboard_view_configuration_03.png)
 
-4. To use a background image, on the **Background** tab, select an image.
-   - **Upload picture** lets you pick an image from the system used to show your Home Assistant UI.
-   - **Local path** lets you pick an image stored on Home Assistant. For example: `/homeassistant/images/lights_view_background_image.jpg`.
-     - To store an image on Home Assistant, you need to [configure access to files](/common-tasks/os/#configuring-access-to-files), for example via [Samba](/common-tasks/os/#installing-and-using-the-samba-add-on) or the [Studio Code Server](/common-tasks/os/#installing-and-using-the-visual-studio-code-vsc-add-on) add-on.
-   - **web URL** let you pick an image from the web. For example `https://www.home-assistant.io/images/frontpage/assist_wake_word.png`.
+4. To use a background image, on the **Background** tab, select an image and customize the background settings. [Read more about these options.](#background)
+
 5. On the **Badges** tab, select the entities you want to be represented by a badge.
     - Sidebar and panel views do not support badges.
 6. By default, the new section is visible to all users. On the **Visibility** tab, you can disable the view for users.
@@ -191,9 +188,50 @@ Set a separate [theme](/integrations/frontend/#themes) for the view and its card
 
 ## Background
 
-You can style the background of your views with a [theme](/integrations/frontend/#themes). You can use the CSS variable `lovelace-background`. For wallpapers you probably want to use the example below, more options can be found [here](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
+The background can be customied per view using individual background settings. Alternatively, a theme variable can be used to customize the background of all views. 
 
-### Example
+### View-specific background settings
+
+**Image** - Sets the background image to use behind the view: 
+   - **Upload picture** lets you pick an image from the system used to show your Home Assistant UI.
+   - **Local path** lets you pick an image stored on Home Assistant. For example: `/homeassistant/images/lights_view_background_image.jpg`.
+     - To store an image on Home Assistant, you need to [configure access to files](/common-tasks/os/#configuring-access-to-files), for example via [Samba](/common-tasks/os/#installing-and-using-the-samba-add-on) or the [Studio Code Server](/common-tasks/os/#installing-and-using-the-visual-studio-code-vsc-add-on) add-on.
+   - **web URL** let you pick an image from the web. For example `https://www.home-assistant.io/images/frontpage/assist_wake_word.png`.
+
+**Transparency** - Adjust the background's opacity, from fully opaque to transparent.
+
+**Size** - Choose how the background fits the space:
+* **Original**: Original size. 
+* **Fill view**: Fills the view, cropping if necessary.
+* **Fit view**: Fits within the view, maintaining aspect ratio.
+
+**Alignment** - Precisely position the background:
+* **Top Alignment**: Top left, top center, or top right
+* **Center Alignment**: Center left, center, or center right
+* **Bottom Alignment**: Bottom left, bottom center, or bottom right
+
+**Repeat** - Controls whether the background repeats across the view:
+* **Repeat**: Tiles the background.
+* **No-repeat**: Prevents tiling, showing the image only once.
+
+#### Example
+
+```yaml
+# Example background section in view yaml
+background:
+  image: /local/background.png
+  settings: 
+    transparency: 50 # any percentage between 0 and 100
+    size: auto # auto, cover, contain
+    alignment: center # top left, top center, top right, center left, center, center right, bottom left, bottom center, bottom right
+    repeat: no-repeat # repeat, no-repeat
+```
+
+### Background theme variable
+
+You can style the background of all your views with a [theme](/integrations/frontend/#themes). You can use the CSS variable `lovelace-background`. For wallpapers you probably want to use the example below, more options can be found [here](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
+
+#### Example
 
 ```yaml
 # Example configuration.yaml entry
@@ -263,8 +301,8 @@ views:
       type: string
     background:
       required: false
-      description: Style the background using CSS.
-      type: string
+      description: Style the background behind the view.
+      type: map
     theme:
       required: false
       description: Themes view and cards.
