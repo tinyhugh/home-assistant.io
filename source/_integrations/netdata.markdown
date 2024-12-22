@@ -145,6 +145,7 @@ sensor:
     host: "192.168.1.2"
     port: "19999"
     name: SomeHostName
+    scan_interval: 00:00:10
     resources: 
       system_load:
         data_group: system.load 
